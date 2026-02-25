@@ -1,9 +1,16 @@
-import React from 'react'
+import './ExpenseItem.css';
 
-const ExpenseItem = () => {
+function ExpenseItem(props) {
+   let {title,day,month,year,expensesAmount}=props
   return (
-    <div>Expense Item!</div>
-  )
+    <div className='expense-item'>
+      <div className='expense-item__date'>{`${day}-${month}-${year}`}</div>
+      <div className='expense-item__description'>
+        <h2>{title}</h2>
+        <div className='expense-item__price'>{`${expensesAmount}$`}</div>
+      </div>
+    </div>
+  );
 }
 
-export default ExpenseItem
+export default ExpenseItem;
