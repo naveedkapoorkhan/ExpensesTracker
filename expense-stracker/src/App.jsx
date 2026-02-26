@@ -20,21 +20,6 @@ const App = () => {
         <ExpenseItem expenses={expenses}></ExpenseItem>
 
       </Card>
-       <Card>
-      
-        <ExpenseItem expenses={expenses}></ExpenseItem>
-
-      </Card>
-       <Card>
-      
-        <ExpenseItem expenses={expenses}></ExpenseItem>
-
-      </Card>
-       <Card>
-      
-        <ExpenseItem expenses={expenses}></ExpenseItem>
-
-      </Card>
       
       
     </div>
