@@ -11,8 +11,30 @@
 
   .expense-item__date {
     font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    border: 4px solid rgb(134, 126, 126);
+    padding:15px;
+    margin: 5px;
+    color: white;
+    border-radius: 10px;
+    background-color: black;
+    align-items: center;
   }
-  
+  .month{
+    font-size: 20px;
+    font-weight: bolder;
+font-family: sans-serif;
+  }
+   .day{
+    font-size: 25px;
+    font-weight: bolder;
+    font-family: sans-serif
+  }
+  .year{
+   font-family: sans-serif;
+    font-size: large;
+  }
   .expense-item__description {
     display: flex;
     flex-direction: column;
