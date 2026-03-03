@@ -2,7 +2,7 @@ import React from 'react'
 import "./ExpenseForm.css"
 import {useState} from "react"
 
-const ExpenseForm = () => {
+const ExpenseForm = ({userData}) => {
 const [enteredTitle,SetEnteredTitle]=useState("")
 const [enteredAmount,SetEnteredAmount]=useState("")
 const [enteredDate,SetEnteredDate]=useState("")
@@ -24,12 +24,13 @@ const [enteredDate,SetEnteredDate]=useState("")
    }
    function formHandler(event){
     event.preventDefault()
-    let NewExpense={title:enteredTitle,date:new Date(enteredDate),amount:enteredAmount}
-    console.log(NewExpense)
+    
+    let NewExpense={id:Math.floor(Math.random()*10000000000),title:enteredTitle,date:new Date(enteredDate),amount:enteredAmount}
+    
     SetEnteredTitle("")
     SetEnteredAmount("")
     SetEnteredDate("")
-
+    userData(NewExpense)
    }
 
 
@@ -40,17 +41,17 @@ const [enteredDate,SetEnteredDate]=useState("")
          <div className="new-expense__controls">
             <div className="new-expense__control">
              <label>Title</label>
-             <input type="text"  onChange={titleChangeHandler} value={enteredTitle}/>
+             <input type="text"  onChange={titleChangeHandler} value={enteredTitle} required/>
             </div>
           
 
              <div className="new-expense__control">
              <label>Amount</label>
-             <input type="number" min="0.01" step="0.01"  onChange={AmountChangeHandler} value={enteredAmount}/>
+             <input type="number" min="0.01" step="0.01"  onChange={AmountChangeHandler} value={enteredAmount} required/>
             </div>
              <div className="new-expense__control">
              <label>Date</label>
-             <input type="date" min="2023-06-26" max="2026-06-25" onChange={DateChangeHandler} value={enteredDate}/>
+             <input type="date" min="2023-06-26" max="2026-06-25" onChange={DateChangeHandler} value={enteredDate} required/>
             </div>
              <div className="new-expense__actions">
              <button type="submit">Add Expense</button>
