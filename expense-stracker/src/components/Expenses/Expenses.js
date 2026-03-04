@@ -1,7 +1,3 @@
-// ////const expenseDate=new Date()
-// //     const expenseTitle="wine expenses"
-
-// // const expenseAmount=240000
 
 const expenses=[
   {
