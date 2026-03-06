@@ -1,5 +1,6 @@
 import React from 'react'
 import {useState} from "react"
+import "./ExpenseDescription.css"
 const ExpenseDescription = (props) => {
   
  let {title,amount}=props
