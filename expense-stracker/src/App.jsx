@@ -8,11 +8,17 @@ const App = () => {
    let [userExpenses,setUserExpenses]=useState(expenses)
 
  function newExpenseDataUser(data){
- 
+
  setUserExpenses(previous=>[data,...previous])
 
  }
- 
+
+  function deleteItem(id){
+  
+   setUserExpenses(prev =>
+    prev.filter(item => item.id !== id)
+  )
+ }
 
   return (
     <div >
@@ -21,7 +27,7 @@ const App = () => {
       <NewExpense userDataExpense={newExpenseDataUser} ></NewExpense>
       <Card>
       
-        <ExpenseItem expenses={userExpenses}></ExpenseItem>
+        <ExpenseItem expenses={userExpenses} deleteItem={deleteItem}></ExpenseItem>
         <TotalExpenses expenses={userExpenses}/>
       </Card>
   
