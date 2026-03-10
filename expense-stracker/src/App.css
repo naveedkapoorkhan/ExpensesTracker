@@ -1,0 +1,10 @@
+.main-app> form{
+    display:flex;
+    flex-direction: column;
+    width: 450px;
+    border: 2px solid blue;
+    margin-left:450px;
+}
+.main-app >input{
+    border:2px solid green;
+}

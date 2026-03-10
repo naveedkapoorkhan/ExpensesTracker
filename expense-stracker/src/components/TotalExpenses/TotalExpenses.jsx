@@ -7,7 +7,7 @@ const TotalExpenses = ({expenses}) => {
     <div className='totalExpense'>
 
       <div className='totalexpenses-text'>Total Expenses</div>
-      <div className='totalexpenses-value'>{totalExpenses} $</div>
+      <div className='totalexpenses-value'>{totalExpenses+"$"}</div>
 
     </div>
   )

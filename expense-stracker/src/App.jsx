@@ -1,37 +1,27 @@
 import React, { useState } from 'react'
+import "./App.css"
 import ExpenseItem from './components/UI/ExpenseItem'
 import expenses from './components/Expenses/Expenses'
 import Card from './components/UI/Card'
 import NewExpense from "./components/NewExpense/NewExpense"
-import TotalExpenses from './components/TotalExpenses/TotalExpenses'
 const App = () => {
-   let [userExpenses,setUserExpenses]=useState(expenses)
+   
 
- function newExpenseDataUser(data){
-
- setUserExpenses(previous=>[data,...previous])
-
- }
-
-  function deleteItem(id){
-  
-   setUserExpenses(prev =>
-    prev.filter(item => item.id !== id)
-  )
- }
 
   return (
-    <div >
+    <div className='main-app'>
      
      
-      <NewExpense userDataExpense={newExpenseDataUser} ></NewExpense>
+      <NewExpense  ></NewExpense>
+     
+      
       <Card>
       
-        <ExpenseItem expenses={userExpenses} deleteItem={deleteItem}></ExpenseItem>
-        <TotalExpenses expenses={userExpenses}/>
+        <ExpenseItem ></ExpenseItem>
+        
+       
       </Card>
-  
-      
+        
     </div>
     
   )

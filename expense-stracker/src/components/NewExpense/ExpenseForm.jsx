@@ -1,8 +1,9 @@
 import React from 'react'
 import "./ExpenseForm.css"
 import {useState} from "react"
+import NewExpense from './NewExpense'
 
-const ExpenseForm = ({userData}) => {
+const ExpenseForm = () => {
 const [enteredTitle,SetEnteredTitle]=useState("")
 const [enteredAmount,SetEnteredAmount]=useState("")
 const [enteredDate,SetEnteredDate]=useState("")
@@ -22,15 +23,30 @@ const [enteredDate,SetEnteredDate]=useState("")
     SetEnteredDate(event.target.value)
     
    }
+
+   const uploadExpense=(NewExpense)=>{
+    fetch("http://localhost:5000/expense/upload",{
+        method:"POST",
+        headers:{
+            "Content-type":"application/json"
+
+        },
+        body:JSON.stringify(NewExpense)
+
+    })
+    .then(res=>res.json())
+    .then(data=>alert(data.message))
+    .catch(err=>console.log(err))
+   }
    function formHandler(event){
     event.preventDefault()
     
     let NewExpense={id:Math.floor(Math.random()*10000000000),title:enteredTitle,date:new Date(enteredDate),amount:enteredAmount}
-    
+    uploadExpense(NewExpense)
     SetEnteredTitle("")
     SetEnteredAmount("")
     SetEnteredDate("")
-    userData(NewExpense)
+   // userData(NewExpense)
    }
 
 
@@ -64,5 +80,4 @@ const [enteredDate,SetEnteredDate]=useState("")
    
   )
 }
-
 export default ExpenseForm

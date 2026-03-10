@@ -1,14 +1,11 @@
 import React from 'react'
 import "./NewExpense.css"
 import ExpenseForm from "./ExpenseForm"
-const NewExpense = ({userDataExpense}) => {
-  function userEnterData(data){
-      userDataExpense(data)
-     
-  }
+const NewExpense = () => {
+ 
   return (
     <div className="new-expense">
-   <ExpenseForm userData={userEnterData}></ExpenseForm>
+   <ExpenseForm></ExpenseForm>
 
     </div>
   )
