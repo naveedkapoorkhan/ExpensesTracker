@@ -16,15 +16,28 @@ useEffect(()=>{
    getExpenses()
  
 })
+const handleDeleteExpense=(id)=>{
+  fetch(`http://localhost:5000/expense/delete/${id}`,{
+    method:"DELETE"
+  })
+  .then(res=>res.json())
+  .then(data=>{setExpenses(data.newExpenses)
+    alert(data.message)
+  })
+  .catch(err=>console.log(err))
+ 
+}
+
+
   return (
     <div className='main-expenseItem'>
        {
         expenses.map((expense)=>(
-          <div className='expense-item' key={expense.id}>
+          <div className='expense-item' key={expense.id}>{expense.id}
             <ExpenseDate date={expense.date}></ExpenseDate>
             <ExpenseDescription title={expense.title} amount={expense.amount}></ExpenseDescription>
             <div className="button-expenseItem">
-              <button className="deleteButton"  onClick={()=>{deleteItem(expense.id)}}>Delete</button>
+              <button className="deleteButton"  onClick={()=>{handleDeleteExpense(expense.id)}}>Delete</button>
               <button className="updateButton" onClick={()=>{setEditItem(expense)}} >Update</button>
        </div>
     </div>
