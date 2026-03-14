@@ -1,0 +1,16 @@
+.navbar{
+    width:100%;
+    background-color: rgb(23, 190, 196);
+   
+}
+.navbar-list{
+    display: flex;
+    justify-content:space-around ;
+    align-items: center;
+}
+.navbar-list li {
+    list-style-type: none;
+}
+ a{
+    text-decoration: none;;
+}
