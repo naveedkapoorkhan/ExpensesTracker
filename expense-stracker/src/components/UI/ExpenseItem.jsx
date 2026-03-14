@@ -1,6 +1,6 @@
 import './ExpenseItem.css';
 import ExpenseDate from './ExpenseDate';
-import TotalExpenses from "../TotalExpenses/TotalExpenses"
+import TotalExpenses from "./TotalExpenses/TotalExpenses"
 import ExpenseDescription from "./ExpenseDescription"
 import { useState ,useEffect} from 'react';
 function ExpenseItem() {
@@ -10,7 +10,12 @@ const [edit,setEdit]=useState(null)
  const getExpenses=()=>{
   fetch("http://localhost:5000/expense/getExpenses")
   .then(res=>res.json())
-  .then(data=>setExpenses(data))
+  .then(data=>{
+    const newFirst=[...data].reverse()
+    setExpenses(newFirst)
+    
+
+  })
   .catch(err=>console.log(err))
  }
 useEffect(()=>{
@@ -22,8 +27,9 @@ const handleDeleteExpense=(id)=>{
     method:"DELETE"
   })
   .then(res=>res.json())
-  .then(data=>{setExpenses(data.Expenses)
-    alert(data.message)
+  .then(data=>{
+    alert(data.message+data.deleteExpense)
+    getExpenses();
   })
   .catch(err=>console.log(err))
  
@@ -43,7 +49,7 @@ const handleForm=(id)=>{
   })
   .then(res=>res.json())
   .then(data=>{
-    setExpenses(data.Expenses)
+   
     alert(data.message)
    
   }
@@ -57,11 +63,11 @@ const handleForm=(id)=>{
     <div className='main-expenseItem'>
        {
         expenses.map((expense)=>(
-          <div className='expense-item' key={expense.id}>
+          <div className='expense-item' key={expense._id}>
             <ExpenseDate date={expense.date}></ExpenseDate>
             <ExpenseDescription title={expense.title} amount={expense.amount}></ExpenseDescription>
             <div className="button-expenseItem">
-              <button className="deleteButton"  onClick={()=>{handleDeleteExpense(expense.id)}}>Delete</button>
+              <button className="deleteButton"  onClick={()=>{handleDeleteExpense(expense._id)}}>Delete</button>
               <button className="updateButton" onClick={()=>{handleEdit(expense)}} >Update</button>
        </div>
     </div>
@@ -72,7 +78,7 @@ const handleForm=(id)=>{
       <input type="text" name="" id="" value={edit.title} onChange={(e)=>{setEdit({...edit,title:e.target.value})}}/>
       <input type="number" name="" id="" value={edit.amount} onChange={(e)=>{setEdit({...edit,amount:e.target.value})}}/>
       <input type='date' name="" id="" value={edit.date} onChange={(e)=>{setEdit({...edit,date:e.target.value})}}/>
-      <button onClick={()=>handleForm(edit.id)}>Save</button>
+      <button onClick={()=>handleForm(edit._id)}>Save</button>
     </div>)
   }
    {expenses.length === 0 && <h2>Sorry No Item Exist</h2>} 
