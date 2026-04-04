@@ -3,12 +3,13 @@ import ExpenseDate from './ExpenseDate';
 import TotalExpenses from "./TotalExpenses/TotalExpenses"
 import ExpenseDescription from "./ExpenseDescription"
 import { useState ,useEffect} from 'react';
+import {Expense_API_URL} from "../../Api.js"
 function ExpenseItem() {
 const [expenses,setExpenses]=useState([])
 const [edit,setEdit]=useState(null)
   //props is always an object even if you send it array still will be object 
  const getExpenses=()=>{
-  fetch("http://localhost:5000/expense/getExpenses")
+  fetch(`${Expense_API_URL}/getExpenses`)
   .then(res=>res.json())
   .then(data=>{
     const newFirst=[...data].reverse()
@@ -23,7 +24,7 @@ useEffect(()=>{
  
 },[])
 const handleDeleteExpense=(id)=>{
-  fetch(`http://localhost:5000/expense/delete/${id}`,{
+  fetch(`${Expense_API_URL}/delete/${id}`,{
     method:"DELETE"
   })
   .then(res=>res.json())
@@ -40,7 +41,7 @@ const handleEdit=(expense)=>{
 }
 const handleForm=(id)=>{
  
-  fetch(`http://localhost:5000/expense/update/${id}`,{
+  fetch(`${Expense_API_URL}/update/${id}`,{
     method:"PUT",
     headers:{
       "Content-Type":"application/json"
@@ -51,12 +52,12 @@ const handleForm=(id)=>{
   .then(data=>{
    
     alert(data.message)
+    getExpenses()
    
   }
 )
  
   setEdit(null)
-  getExpenses()
 }
 
   return (

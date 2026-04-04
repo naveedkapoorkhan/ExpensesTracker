@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+import {USER_API_URL} from "../../Api.js"
 const SignUp = () => {
   const [email,setEmail]=useState("")
   const [password,setPassword]=useState("")
@@ -8,7 +8,7 @@ const SignUp = () => {
     e.preventDefault();
      const user={email:email,password:password}
  
-     fetch("http://localhost:5000/user/register",{
+     fetch(`${USER_API_URL}/register`,{
       method:"POST",
       headers:{
         "Content-Type":"application/json",
