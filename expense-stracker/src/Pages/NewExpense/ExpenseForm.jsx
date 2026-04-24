@@ -1,7 +1,7 @@
 import React from 'react'
 import "./ExpenseForm.css"
 import {useState} from "react"
-import NewExpense from './NewExpense'
+
 
 const ExpenseForm = () => {
 const [enteredTitle,SetEnteredTitle]=useState("")
