@@ -6,6 +6,7 @@ const Navbar = () => {
       <div className="container">
         {/* Brand/Logo - Optional */}
         <Link className="navbar-brand" to="/addExpense"  >ExpenseTracker</Link>
+        
 
         {/* Toggle button for mobile view */}
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -16,6 +17,10 @@ const Navbar = () => {
           <ul className="navbar-nav me-auto">
             <li className="nav-item">
               <Link className="nav-link" to="/addExpense">Add Expenses</Link>
+            </li>
+            <li>
+              <Link className="nav-link" to="/"  >ShowExpenses</Link>
+              
             </li>
           </ul>
           
