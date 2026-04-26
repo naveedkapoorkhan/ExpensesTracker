@@ -2,26 +2,12 @@ import './ExpenseItem.css';
 import ExpenseDate from './ExpenseDate';
 import TotalExpenses from "./TotalExpenses/TotalExpenses"
 import ExpenseDescription from "./ExpenseDescription"
-import { useState, useEffect } from 'react';
+import { useState } from 'react'; // Removed useEffect
 import { Expense_API_URL } from "../../Api.js"
 
-function ExpenseItem() {
-    const [expenses, setExpenses] = useState([])
+// 1. We only use the props passed from App.js
+function ExpenseItem({ expenses, refreshData }) {
     const [edit, setEdit] = useState(null)
-
-    const getExpenses = () => {
-        fetch(`${Expense_API_URL}/getExpenses`)
-            .then(res => res.json())
-            .then(data => {
-                const newFirst = [...data].reverse()
-                setExpenses(newFirst)
-            })
-            .catch(err => console.log(err))
-    }
-
-    useEffect(() => {
-        getExpenses()
-    }, [])
 
     const handleDeleteExpense = (id) => {
         fetch(`${Expense_API_URL}/delete/${id}`, {
@@ -29,8 +15,9 @@ function ExpenseItem() {
         })
             .then(res => res.json())
             .then(data => {
-                alert(data.message + data.deleteExpense)
-                getExpenses();
+                alert(data.message);
+                // 2. This tells App.js to fetch new data immediately
+                refreshData(); 
             })
             .catch(err => console.log(err))
     }
@@ -49,18 +36,20 @@ function ExpenseItem() {
         })
             .then(res => res.json())
             .then(data => {
-                alert(data.message)
-                getExpenses()
+                alert(data.message);
+                // 3. Refresh the shared list after updating
+                refreshData(); 
+                setEdit(null); // Close form after success
             })
-        setEdit(null)
+            .catch(err => console.log(err))
     }
 
     return (
         <div className='container my-4'>
             <div className="row justify-content-center">
                 <div className="col-md-8">
-                    {/* Expense List */}
                     <div className="list-group mb-4">
+                        {/* 4. Mapping uses the prop 'expenses' directly */}
                         {expenses.map((expense) => (
                             <div className='list-group-item list-group-item-action d-flex align-items-center justify-content-between p-3' key={expense._id}>
                                 <div className="d-flex align-items-center gap-3">
@@ -79,10 +68,8 @@ function ExpenseItem() {
                         ))}
                     </div>
 
-                    {/* Empty State */}
                     {expenses.length === 0 && <h2 className="text-center text-muted mt-5">No Items Found</h2>}
 
-                    {/* Edit Form Modal/Section */}
                     {edit && (
                         <div className="card shadow-sm mb-4">
                             <div className="card-header bg-primary text-white">
@@ -98,7 +85,6 @@ function ExpenseItem() {
                                         onChange={(e) => { setEdit({ ...edit, title: e.target.value }) }}
                                     />
                                 </div>
-
                                 <div className="mb-3">
                                     <label className="form-label">Amount</label>
                                     <input
@@ -108,7 +94,6 @@ function ExpenseItem() {
                                         onChange={(e) => { setEdit({ ...edit, amount: e.target.value }) }}
                                     />
                                 </div>
-
                                 <div className="mb-3">
                                     <label className="form-label">Date</label>
                                     <input
@@ -118,7 +103,6 @@ function ExpenseItem() {
                                         onChange={(e) => { setEdit({ ...edit, date: e.target.value }) }}
                                     />
                                 </div>
-
                                 <div className="d-flex gap-2">
                                     <button className="btn btn-success flex-grow-1" onClick={() => handleForm(edit._id)}>Save Changes</button>
                                     <button className="btn btn-secondary" onClick={() => setEdit(null)}>Cancel</button>
