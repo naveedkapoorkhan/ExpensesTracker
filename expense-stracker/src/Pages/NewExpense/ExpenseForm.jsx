@@ -1,13 +1,13 @@
 import React from 'react'
 import "./ExpenseForm.css"
 import {useState} from "react"
+import { useNavigate } from 'react-router-dom';
 
-
-const ExpenseForm = () => {
+const ExpenseForm = ({onAddSuccess}) => {
 const [enteredTitle,SetEnteredTitle]=useState("")
 const [enteredAmount,SetEnteredAmount]=useState("")
 const [enteredDate,SetEnteredDate]=useState("")
-
+const navigate = useNavigate();
    function titleChangeHandler(event){
 
      SetEnteredTitle(event.target.value)
@@ -35,7 +35,15 @@ const [enteredDate,SetEnteredDate]=useState("")
 
     })
     .then(res=>res.json())
-    .then(data=>alert(data.message))
+    .then(data => {
+    alert(data.message);
+    
+    // CRITICAL: This is what updates the list automatically
+    if (onAddSuccess) {
+      onAddSuccess(); 
+      navigate('/');
+    }
+  })
     .catch(err=>console.log(err))
    }
    function formHandler(event){

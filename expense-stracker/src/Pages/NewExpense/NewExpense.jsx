@@ -1,14 +1,13 @@
 import React from 'react'
 import "./NewExpense.css"
 import ExpenseForm from "./ExpenseForm"
-const NewExpense = () => {
- 
+
+const NewExpense = ({ onAddSuccess }) => {
   return (
     <div className="new-expense">
-   <ExpenseForm></ExpenseForm>
-
+      <ExpenseForm onAddSuccess={onAddSuccess} />
     </div>
-  )
-}
+  );
+};
 
 export default NewExpense
