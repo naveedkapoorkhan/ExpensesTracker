@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { USER_API_URL } from "../../Api.js"
-
+import { useNavigate } from 'react-router-dom';
 const SignUp = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-
+const navigate=useNavigate()
   const handleSignUpForm = (e) => {
     e.preventDefault();
     const user = { email: email, password: password }
@@ -19,6 +19,7 @@ const SignUp = () => {
       .then(res => res.json())
       .then(data => {
         alert(data.message)
+        navigate('/login');
       })
       .catch(err => console.log(err))
   }
