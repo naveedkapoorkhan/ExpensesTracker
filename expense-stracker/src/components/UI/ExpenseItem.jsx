@@ -2,21 +2,31 @@ import './ExpenseItem.css';
 import ExpenseDate from './ExpenseDate';
 import TotalExpenses from "./TotalExpenses/TotalExpenses"
 import ExpenseDescription from "./ExpenseDescription"
-import { useState } from 'react'; // Removed useEffect
+import { useState } from 'react';
 import { Expense_API_URL } from "../../Api.js"
 
-// 1. We only use the props passed from App.js
 function ExpenseItem({ expenses, refreshData }) {
     const [edit, setEdit] = useState(null)
 
     const handleDeleteExpense = (id) => {
+        /* OLD CODE:
         fetch(`${Expense_API_URL}/delete/${id}`, {
             method: "DELETE"
+        })
+        */
+
+        // NEW CODE: Added token to the delete request
+        const token = localStorage.getItem("token");
+
+        fetch(`${Expense_API_URL}/delete/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
         })
             .then(res => res.json())
             .then(data => {
                 alert(data.message);
-                // 2. This tells App.js to fetch new data immediately
                 refreshData(); 
             })
             .catch(err => console.log(err))
@@ -27,6 +37,7 @@ function ExpenseItem({ expenses, refreshData }) {
     }
 
     const handleForm = (id) => {
+        /* OLD CODE:
         fetch(`${Expense_API_URL}/update/${id}`, {
             method: "PUT",
             headers: {
@@ -34,12 +45,24 @@ function ExpenseItem({ expenses, refreshData }) {
             },
             body: JSON.stringify(edit)
         })
+        */
+
+        // NEW CODE: Added token to update request
+        const token = localStorage.getItem("token");
+
+        fetch(`${Expense_API_URL}/update/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(edit)
+        })
             .then(res => res.json())
             .then(data => {
                 alert(data.message);
-                // 3. Refresh the shared list after updating
                 refreshData(); 
-                setEdit(null); // Close form after success
+                setEdit(null); 
             })
             .catch(err => console.log(err))
     }
@@ -49,7 +72,6 @@ function ExpenseItem({ expenses, refreshData }) {
             <div className="row justify-content-center">
                 <div className="col-md-8">
                     <div className="list-group mb-4">
-                        {/* 4. Mapping uses the prop 'expenses' directly */}
                         {expenses.map((expense) => (
                             <div className='list-group-item list-group-item-action d-flex align-items-center justify-content-between p-3' key={expense._id}>
                                 <div className="d-flex align-items-center gap-3">
