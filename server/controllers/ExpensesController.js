@@ -1,31 +1,50 @@
 import Expenses from "../model/ExpensesModel.js"
 export const AddExpenses=async(req,res)=>{
-     try{
-       const expenseItem=req.body
-    await  Expenses.create(expenseItem)
-      return res.status(201).json({
-        message:"expense added successfully"
-      })
-     }
-     catch(err){
-      console.error(err)
-      return res.status(500).json({
-         error:err.message,
-         message:"error to add Expenses"
-      })
-     }
+     try {
+    const { title, amount, date } = req.body;
+    const userId = req.user.id; // Get user ID from the middleware
+
+    const newExpense = new Expenses({ title, amount, date });
+    
+    // Dynamically attach the user ID bypassing strict schema settings
+    newExpense.set('user', userId, { strict: false });
+    
+    await newExpense.save();
+
+    res.status(201).json({ message: "Expense added successfully", newExpense });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
 }
 // export const GetExpenses=(req,res)=>{
 //   const ListOfExpenses= Expenses.find()
 //  res.json(ListOfExpenses)
 // }
+// export const GetExpenses = async (req, res) => {
+//   try {
+//     // req.user.id matches the property name you included when you generated the JWT
+//     const userId = req.user.id;
+//     // Find expenses that belong ONLY to this logged-in user
+//     const userExpenses = await Expenses.find({ user: userId });
+//     //const allExpenses = await Expenses.find(); 
+    
+//     // Send the actual data back
+//     res.json(userExpenses);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Server Error" });
+//   }
+// };
 export const GetExpenses = async (req, res) => {
   try {
+    // req.user.id comes directly from the decoded token in your middleware
+    const userId = req.user.id; 
+
+    // Find ONLY expenses where the user field matches the logged-in user's ID
+    const userExpenses = await Expenses.find({ user: userId }, null, { strict: false }); 
     
-    const allExpenses = await Expenses.find(); 
-    
-    // Send the actual data back
-    res.json(allExpenses);
+    res.json(userExpenses);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server Error" });
