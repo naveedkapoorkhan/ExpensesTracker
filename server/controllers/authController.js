@@ -1,4 +1,6 @@
 import User from "../model/userModel.js"
+import jwt from "jsonwebtoken"
+import {JWT_SECRET} from "../configuration/config.js"
 import bcrypt from "bcrypt"
 const {hash,compare}=bcrypt
 export const userRegister=async(req,res)=>{
@@ -22,22 +24,45 @@ res.status(500).json({message:"internal server error"})
 
 
 }
-export const userLogin=async(req,res)=>{
+// export const userLogin=async(req,res)=>{
     
-    try{
-    const {email,password}=req.body
-    const user=await User.findOne({email})
-    if(!user) return res.status(404).json({message:"User not found!"})
-        const matchPassword = await compare(password,user.password)
-    if(!matchPassword) return res.status(401).json({message:" Not Valid Password"})
+//     try{
+//     const {email,password}=req.body
+//     const user=await User.findOne({email})
+//     if(!user) return res.status(404).json({message:"User not found!"})
+//         const matchPassword = await compare(password,user.password)
+//     if(!matchPassword) return res.status(401).json({message:" Not Valid Password"})
      
-        return res.json({message:"login sucessfull"})
+//         return res.json({message:"login sucessfull"})
 
         
-}
-catch(error)
-{
-    console.log(error)
-    res.json({message:"internal server error"})
-}
+// }
+// catch(error)
+// {
+//     console.log(error)
+//     res.json({message:"internal server error"})
+// }
+// }
+
+
+export const userLogin = async (req, res) => {
+    try {
+        const { email, password } = req.body
+        const user = await User.findOne({ email })
+        if (!user) return res.status(404).json({ message: "User not found!" })
+        const matchPassword = await compare(password, user.password)
+        if (!matchPassword) return res.status(401).json({ message: " Not Valid Password" })
+
+        /* OLD CODE:
+        return res.json({message:"login sucessfull"})
+        */
+
+        // NEW CODE: Generate a JWT token containing the user's ID
+        const token = jwt.sign({ id: user._id },JWT_SECRET, { expiresIn: "1d" });
+        return res.json({ message: "Login successful", token: token });
+    }
+    catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "internal server error" })
+    }
 }
