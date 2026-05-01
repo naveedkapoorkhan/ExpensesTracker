@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { USER_API_URL } from "../../Api.js"
 import { useNavigate } from 'react-router-dom'
+
 const Login = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
- const navigate=useNavigate()
+  const navigate = useNavigate()
+
   const handleSignUpForm = (e) => {
     e.preventDefault();
     const user = { email: email, password: password }
@@ -18,8 +20,19 @@ const Login = () => {
     })
       .then(res => res.json())
       .then(data => {
+        /* OLD CODE:
         alert(data.message)
         navigate('/');
+        */
+
+        // NEW CODE: Save the token to LocalStorage if it exists
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+          alert(data.message);
+          navigate('/');
+        } else {
+          alert(data.message || "Login failed");
+        }
       })
       .catch(err => console.log(err))
   }
