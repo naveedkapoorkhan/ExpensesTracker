@@ -24,28 +24,56 @@ const navigate = useNavigate();
     
    }
 
-   const uploadExpense=(NewExpense)=>{
-    fetch("http://localhost:5000/expense/upload",{
-        method:"POST",
-        headers:{
-            "Content-type":"application/json"
+  //  const uploadExpense=(NewExpense)=>{
+  //   fetch("http://localhost:5000/expense/upload",{
+  //       method:"POST",
+  //       headers:{
+  //           "Content-type":"application/json"
 
-        },
-        body:JSON.stringify(NewExpense)
+  //       },
+  //       body:JSON.stringify(NewExpense)
 
-    })
-    .then(res=>res.json())
-    .then(data => {
-    alert(data.message);
+  //   })
+  //   .then(res=>res.json())
+  //   .then(data => {
+  //   alert(data.message);
     
-    // CRITICAL: This is what updates the list automatically
+  //   // CRITICAL: This is what updates the list automatically
+  //   if (onAddSuccess) {
+  //     onAddSuccess(); 
+  //     navigate('/');
+  //   }
+  // })
+  //   .catch(err=>console.log(err))
+  //  }
+  // Inside your uploadExpense function in ExpenseForm.jsx
+
+const uploadExpense = (NewExpense) => {
+  const token = localStorage.getItem("token"); // <-- Get token from localStorage
+
+  if (!token) {
+    alert("Please log in first!");
+    return;
+  }
+
+  fetch("http://localhost:5000/expense/upload", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}` // <-- Send token to the backend
+    },
+    body: JSON.stringify(NewExpense)
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert(data.message);
     if (onAddSuccess) {
       onAddSuccess(); 
       navigate('/');
     }
   })
-    .catch(err=>console.log(err))
-   }
+  .catch(err => console.log(err));
+};
    function formHandler(event){
     event.preventDefault()
     
